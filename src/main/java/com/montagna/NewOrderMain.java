@@ -14,7 +14,7 @@ public class NewOrderMain {
 
         // Criar um Produtor do Kafka
         var kafkaProducer = new KafkaProducer<String, String>(properties());
-        var value = "ValorKafka1,456456,46456";
+        var value = "ValorKafka1,456456,464567";
         var record = new ProducerRecord<>("ECOMMERCE_NEW_ORDER", value, value);
 
         // Enviar para o tópico do Kafka
