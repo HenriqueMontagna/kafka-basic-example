@@ -1,2 +1,3 @@
-# kafka-basic-example
-Kafka Basic Example
+# Kafka Basic Example
+
+Exemplos basicos do uso de Kafka para aprendizado e consulta de fundamentos.
