@@ -20,7 +20,7 @@ public class FraudDetectorService {
 
                 if (!records.isEmpty()) {
                     System.out.println("+++ Records Found +++ \n Number of Records: %s".formatted(records.count()));
-                    for (ConsumerRecord record : records) {
+                    for (ConsumerRecord<?, ?> record : records) {
                         System.out.println("=============================================");
                         System.out.println("Processing new order, checking for fraud");
                         System.out.println(record.key());
@@ -29,9 +29,7 @@ public class FraudDetectorService {
                         System.out.println(record.offset());
                         System.out.println("=============================================");
                     }
-                    continue;
                 }
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
