@@ -11,7 +11,7 @@ public class FraudDetectorService {
 
     public static void main(String[] args) {
 
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties());
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(properties());
         consumer.subscribe(Collections.singletonList("ECOMMERCE_NEW_ORDER"));
 
         while (true) {
@@ -44,6 +44,7 @@ public class FraudDetectorService {
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, FraudDetectorService.class.getSimpleName());
+        properties.setProperty(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
 
         return properties;
     }
