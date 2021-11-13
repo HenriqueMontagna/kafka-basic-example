@@ -17,7 +17,7 @@ public class NewOrderMain {
         // Criar um Produtor do Kafka
         var kafkaProducer = new KafkaProducer<String, String>(properties());
 
-        for (var i = 0; i <= 100; i++) {
+        for (var i = 0; i <= 1; i++) {
 
             // Valores que serão atribuídos a key e ao value
             var key = UUID.randomUUID().toString();
