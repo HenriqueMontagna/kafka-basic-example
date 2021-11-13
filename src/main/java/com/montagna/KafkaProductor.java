@@ -9,22 +9,21 @@ import java.io.Closeable;
 import java.util.Properties;
 import java.util.UUID;
 
-public class KafkaProductor implements Closeable {
+public class KafkaProductor<T> implements Closeable {
 
-    private final KafkaProducer producer;
+    private final KafkaProducer<String, T> producer;
     private final String topic;
 
     KafkaProductor(String topic) {
         this.topic = topic;
-        KafkaProducer kafkaProducer = new KafkaProducer<String, String>(properties());
-        this.producer = kafkaProducer;
+        this.producer = new KafkaProducer<>(properties());
     }
 
-    void run(String message) {
+    void run(T message) {
 
         String key = UUID.randomUUID().toString();
 
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, message);
+        ProducerRecord<String, T> record = new ProducerRecord<>(topic, key, message);
 
         try {
             this.producer.send(record, (recordMetadata, exception) -> {
@@ -44,7 +43,7 @@ public class KafkaProductor implements Closeable {
         var properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "PLAINTEXT://henrique-virtualbox:9092");
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, GsonSerializer.class.getName());
 
         return properties;
     }
