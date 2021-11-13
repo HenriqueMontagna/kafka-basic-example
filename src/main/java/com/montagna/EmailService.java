@@ -14,41 +14,22 @@ public class EmailService {
 
     public static void main(String[] args) {
 
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(properties());
-        consumer.subscribe(Collections.singletonList("ECOMMERCE_SEND_EMAIL"));
+        var emailService = new EmailService();
 
-        while (true) {
-            try {
-                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
-
-                if (!records.isEmpty()) {
-                    System.out.println("+++ Records Found +++ \n Number of Records: %s".formatted(records.count()));
-                    for (ConsumerRecord<?, ?> record : records) {
-                        System.out.println("=============================================");
-                        System.out.println("Processing new order, checking for fraud");
-                        System.out.println(record.key());
-                        System.out.println(record.value());
-                        System.out.println(record.partition());
-                        System.out.println(record.offset());
-                        System.out.println("=============================================");
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-        }
+        new KafkaService("ECOMMERCE_SEND_EMAIL", emailService::parse, EmailService.class.getSimpleName()).run();
 
     }
 
-    private static Properties properties() {
-        Properties properties = new Properties();
-        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "henrique-virtualbox:9092");
-        properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, EmailService.class.getSimpleName());
-
-        return properties;
+    private void parse(ConsumerRecord<String, String> record) {
+        System.out.println("=============================================");
+        System.out.println("Send New Email");
+        System.out.println(record.key());
+        System.out.println(record.value());
+        System.out.println(record.partition());
+        System.out.println(record.offset());
+        System.out.println("=============================================");
     }
 
 }
+
+
