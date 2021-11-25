@@ -2,17 +2,24 @@ package com.montagna;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import java.io.IOException;
+
 public class FraudDetectorService {
 
     public static void main(String[] args) {
 
         FraudDetectorService fraudDetectorService = new FraudDetectorService();
 
-        new KafkaService("ECOMMERCE_NEW_ORDER", fraudDetectorService::parse, FraudDetectorService.class.getSimpleName()).run();
+        try (var kafkaService = new KafkaService("ECOMMERCE_NEW_ORDER", fraudDetectorService::parse, FraudDetectorService.class.getSimpleName(), Order.class.getName()) ) {
+            kafkaService.run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
-    private void parse(ConsumerRecord<String, String> record) {
+    private void parse(ConsumerRecord<String, Order> record) {
         System.out.println("=============================================");
         System.out.println("Processing new order, checking for fraud");
         System.out.println(record.key());

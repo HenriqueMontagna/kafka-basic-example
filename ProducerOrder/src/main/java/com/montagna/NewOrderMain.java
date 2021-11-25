@@ -17,7 +17,7 @@ public class NewOrderMain {
                     BigDecimal.valueOf(100 + (new Random().nextDouble() * (500 - 100)))
             ));
 
-            sendEmailProducer.run("Message from Email {NEW EMAIL}");
+            sendEmailProducer.run(new Email("New Message from {EMAIL}", "Body of {EMAIL}"));
 
         }
 
